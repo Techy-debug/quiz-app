@@ -1,26 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import React, { useState, useEffect, useContext } from 'react';
+import GlobalProvider from './api/GlobalState'
+import { GlobalContext } from './api/GlobalState'
+
+
+
+import Header from './components/Header'
+import Select from './components/Select'
+import Question from './components/Question'
+import QuizHandler from './components/QuizHandler'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+	const [ changeScreen, setChangeScreen ] = useState(false)
+	const context = useContext(GlobalContext)
+
+
+
+	console.log('rendering')
+
+
+	function handleClick() {
+		setChangeScreen(true)
+	}
+
+	if(!changeScreen){
+		return(
+				<GlobalProvider>
+					<Header />
+					<Select
+						onClick={handleClick}
+					 />
+				</GlobalProvider>
+			)	
+	}
+
+
+
+
+	return (
+			<GlobalProvider>
+				<Header />
+				{
+					context.datas === undefined ? 'Nothing' : <QuizHandler />
+				}
+			</GlobalProvider>
+		)
+
 }
 
 export default App;
